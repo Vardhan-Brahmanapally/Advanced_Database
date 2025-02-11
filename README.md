@@ -30,14 +30,5 @@ For each system, a relational schema is provided in the form:
 ```
 ENTITY(primary_key, attribute1, attribute2, ... foreign_key)
 ```
-This defines the tables and their relationships in a structured format.
 
-## Submission Instructions
-1. Update the GitHub repository URL in `report.qmd`.
-2. Generate the HTML/PDF report from the Quarto file.
-3. Push all changes to GitHub.
-4. Upload the generated report to Canvas.
-
-## Contact
-For any issues or questions, please reach out via GitHub or course forums.
 
