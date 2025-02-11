@@ -1,0 +1,218 @@
+---
+title: "Homework 2 - Entity Relation Diagrams"
+author: "Vardhan"
+output: html_document
+---
+
+**GitHub Repository**: "[https://github.com/Vardhan-Brahmanapally/Advanced_Database](https://github.com/Vardhan-Brahmanapally/Advanced_Database)"
+
+
+# Entity Relation Diagrams
+
+## Introduction
+This report presents ER diagrams for three selected systems: Library Management System, Restaurant Reservation System, and Hotel Booking System. The diagrams include both Chen notation and Crow’s Foot notation, detailing entities, attributes, relationships, and cardinalities. Additionally, relational decisions and relation schemas are provided for each system.
+
+## Library Management System
+
+### Relational Decisions
+- A member can borrow multiple books over time.
+- Each loan is associated with a single book and a single member.
+- The loan entity captures loan and return dates.
+
+### Relation Schema
+- BOOK(book_id PK, title, author)
+- MEMBER(member_id PK, name, membership_date)
+- LOAN(loan_id PK, loan_date, return_date, book_id FK, member_id FK)
+
+### Chen Notation
+```{dot}
+digraph Library_ER {
+    node [shape=box];
+    Book [label="Book (book_id)"];
+    Member [label="Member (member_id)"];
+    Loan [label="Loan (loan_id)"];
+    
+    node [shape=ellipse];
+    title;
+    author;
+    name;
+    membership_date;
+    loan_date;
+    return_date;
+    
+    Book -> title;
+    Book -> author;
+    Member -> name;
+    Member -> membership_date;
+    Loan -> loan_date;
+    Loan -> return_date;
+    
+    node [shape=diamond];
+    Borrowing;
+    Member -> Borrowing [label="1,N"];
+    Borrowing -> Loan [label="1,1"];
+    Loan -> Book [label="1,1"];
+}
+```
+
+### Crow’s Foot Notation (Mermaid)
+```{mermaid}
+erDiagram
+    BOOK ||--o{ LOAN : "is borrowed in"
+    MEMBER ||--o{ LOAN : "borrows"
+    BOOK {
+        int book_id PK
+        string title
+        string author
+    }
+    MEMBER {
+        int member_id PK
+        string name
+        date membership_date
+    }
+    LOAN {
+        int loan_id PK
+        date loan_date
+        date return_date
+        int book_id FK
+        int member_id FK
+    }
+```
+
+## Restaurant Reservation System
+
+### Relational Decisions
+- Each reservation is made by a single customer.
+- Each table can have multiple reservations over time.
+- A reservation includes date and time details.
+
+### Relation Schema
+- CUSTOMER(customer_id PK, name, contact)
+- TABLE(table_number PK, seating_capacity, location)
+- RESERVATION(reservation_id PK, date, time, customer_id FK, table_number FK)
+
+### Chen Notation
+```{dot}
+digraph Restaurant_ER {
+    node [shape=box];
+    Customer [label="Customer (customer_id)"];
+    Reservation [label="Reservation (reservation_id)"];
+    Table [label="Table (table_number)"];
+    
+    node [shape=ellipse];
+    name;
+    contact;
+    date;
+    time;
+    seating_capacity;
+    location;
+    
+    Customer -> name;
+    Customer -> contact;
+    Reservation -> date;
+    Reservation -> time;
+    Table -> seating_capacity;
+    Table -> location;
+    
+    node [shape=diamond];
+    Makes;
+    For;
+    Customer -> Makes [label="1,N"];
+    Makes -> Reservation [label="1,1"];
+    Reservation -> For [label="1,1"];
+    For -> Table [label="1,N"];
+}
+```
+
+### Crow’s Foot Notation (Mermaid)
+```{mermaid}
+erDiagram
+    CUSTOMER ||--o{ RESERVATION : "makes"
+    TABLE ||--o{ RESERVATION : "for"
+    CUSTOMER {
+        int customer_id PK
+        string name
+        string contact
+    }
+    RESERVATION {
+        int reservation_id PK
+        date date
+        time time
+        int customer_id FK
+        int table_number FK
+    }
+    TABLE {
+        int table_number PK
+        int seating_capacity
+        string location
+    }
+```
+
+## Hotel Booking System
+
+### Relational Decisions
+- A guest can make multiple bookings.
+- Each booking is associated with one room and one guest.
+- Booking includes check-in and check-out dates.
+
+### Relation Schema
+- GUEST(guest_id PK, name, contact)
+- ROOM(room_number PK, type, rate)
+- BOOKING(booking_id PK, check_in, check_out, guest_id FK, room_number FK)
+
+### Chen Notation
+```{dot}
+digraph Hotel_ER {
+    node [shape=box];
+    Guest [label="Guest (guest_id)"];
+    Booking [label="Booking (booking_id)"];
+    Room [label="Room (room_number)"];
+    
+    node [shape=ellipse];
+    name;
+    contact;
+    check_in;
+    check_out;
+    type;
+    rate;
+    
+    Guest -> name;
+    Guest -> contact;
+    Booking -> check_in;
+    Booking -> check_out;
+    Room -> type;
+    Room -> rate;
+    
+    node [shape=diamond];
+    Makes;
+    For;
+    Guest -> Makes [label="1,N"];
+    Makes -> Booking [label="1,1"];
+    Booking -> For [label="1,1"];
+    For -> Room [label="1,N"];
+}
+```
+
+### Crow’s Foot Notation (Mermaid)
+```{mermaid}
+erDiagram
+    GUEST ||--o{ BOOKING : "makes"
+    ROOM ||--o{ BOOKING : "for"
+    GUEST {
+        int guest_id PK
+        string name
+        string contact
+    }
+    BOOKING {
+        int booking_id PK
+        date check_in
+        date check_out
+        int guest_id FK
+        int room_number FK
+    }
+    ROOM {
+        int room_number PK
+        string type
+        float rate
+    }
+```
